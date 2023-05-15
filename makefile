@@ -2,10 +2,7 @@ build:
 	sam build --template ./src/generate-url/template.yaml --build-dir ./src/generate-url/build
 
 package:
-	aws cloudformation package \
-		--template-file ./arch/templates/main.yaml \
-		--output-template-file ./arch/templates/build/main.yaml \
-		--s3-bucket $(BUCKET_NAME)
+	tools/package.sh
 
 deploy: 
 	aws cloudformation deploy \
