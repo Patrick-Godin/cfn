@@ -1,0 +1,25 @@
+# Define variables
+S3_BUCKET=my-s3-bucket
+STACK_NAME=my-stack-name
+TEMPLATE_FILE=template.yaml
+SAM_BUILD_DIR=src/lambda1/build
+REGION=us-east-1
+
+.PHONY: clean build package deploy
+
+# Clean up build artifacts
+clean:
+	rm -rf $(SAM_BUILD_DIR)
+
+# Build the SAM application
+build:
+	sam build --region $(REGION) --template $(TEMPLATE_FILE) --build-dir $(SAM_BUILD_DIR)
+
+# Package and upload the SAM application
+package: build
+	sam package --region $(REGION) --template-file $(SAM_BUILD_DIR)/template.yaml --s3-bucket $(S3_BUCKET) --output-template-file $(SAM_BUILD_DIR)/packaged.yaml
+
+# Deploy the SAM application
+deploy: package
+	sam deploy --region $(REGION) --template-file $(SAM_BUILD_DIR)/packaged.yaml --stack-name $(STACK_NAME) --capabilities CAPABILITY_IAM
+
