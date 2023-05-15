@@ -3,8 +3,8 @@ Resources:
     Type: 'AWS::Lambda::Function'
     Properties:
       FunctionName: my-lambda-function
-      Code: ../../src/app/generate-url/build
-      Handler: index.handler
+      Code: ../../src/generate-url #build/HelloWorldFunction
+      Handler: lambda_handler.handler
       Role: !GetAtt MyLambdaExecutionRole.Arn
       Runtime: python3.9
       Timeout: 60
